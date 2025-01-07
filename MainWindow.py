@@ -19,10 +19,10 @@ from PySide6.QtCore import (
 class MainWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
+        self.app = app
         self.unsavedChanges = False
         self.fileName = "Untitled"
 
-        self.app = app
         self.SetDocumentTitle()
         self.setWindowIcon(QIcon("Resources/Images/Icon.png"))
 
@@ -64,36 +64,44 @@ class MainWindow(QMainWindow):
         
         newAction = QAction("&New", self)
         newAction.setShortcut("Ctrl+N")
+        newAction.triggered.connect(self.FunctionNew)
         menu_File.addAction(newAction)
 
         newWindowAction = QAction("New &Window", self)
         newWindowAction.setShortcut("Ctrl+Shift+N")
+        newWindowAction.triggered.connect(self.FunctionNewWindow)
         menu_File.addAction(newWindowAction)
 
         openAction = QAction("&Open...", self)
         openAction.setShortcut("Ctrl+O")
+        openAction.triggered.connect(self.FunctionOpen)
         menu_File.addAction(openAction)
 
         saveAction = QAction("&Save", self)
         saveAction.setShortcut("Ctrl+S")
+        saveAction.triggered.connect(self.FunctionSave)
         menu_File.addAction(saveAction)
 
         saveAsAction = QAction("Save &As...", self)
         saveAsAction.setShortcut("Ctrl+Shift+S")
+        saveAsAction.triggered.connect(self.FunctionSaveAs)
         menu_File.addAction(saveAsAction)
 
         menu_File.addSeparator()
 
         pageSetupAction = QAction("Page Set&up...", self)
+        pageSetupAction.triggered.connect(self.FunctionPageSetup)
         menu_File.addAction(pageSetupAction)
 
         printAction = QAction("&Print...", self)
         printAction.setShortcut("Ctrl+P")
+        printAction.triggered.connect(self.FunctionPrint)
         menu_File.addAction(printAction)
 
         menu_File.addSeparator()
 
         exitAction = QAction("E&xit", self)
+        exitAction.triggered.connect(self.FunctionExit)
         menu_File.addAction(exitAction)
 
     def InitEditMenu(self):
@@ -221,12 +229,41 @@ class MainWindow(QMainWindow):
     def SetDocumentTitle(self):            
         docEdited = "" if self.unsavedChanges == False else "*"
         self.setWindowTitle(docEdited + self.fileName + " - Notepad")
-    
-    def TextChanged(self):
-            print('changed!', self.unsavedChanges)
-            if self.unsavedChanges == False:
-                print("asdasd")
-                self.unsavedChanges = True
-                self.SetDocumentTitle()
+        #TODO: Check if original state was matched
 
-    
+    def TextChanged(self):
+        if self.unsavedChanges == False:
+            self.unsavedChanges = True
+            self.SetDocumentTitle()
+
+    def FunctionNew(self):
+        self.textBox.clear()
+        
+        self.unsavedChanges = False
+        self.fileName = "Untitled"
+
+        self.SetDocumentTitle()
+
+    def FunctionNewWindow(self):
+        print("TODO: Implement new window function")
+
+    def FunctionOpen(self):
+        print("TODO: Implement open function")
+
+    def FunctionSave(self):
+        print("TODO: Implement save function")
+
+    def FunctionSaveAs(self):
+        print("TODO: Implement save as function")
+
+    def FunctionPageSetup(self):
+        print("TODO: Implement page setup function")
+
+    def FunctionPrint(self):
+        print("TODO: Implement print function")
+
+    def FunctionExit(self):
+        self.close()
+        #TODO: Check if unsaved changes then prompt save
+
+
